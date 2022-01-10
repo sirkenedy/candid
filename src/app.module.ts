@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CustomersModule } from './modules/customers/customers.module';
 import "reflect-metadata";
 
 @Module({
@@ -15,6 +16,7 @@ import "reflect-metadata";
       isGlobal: true
     }),
     TypeOrmModule.forRoot(),
+    CustomersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
