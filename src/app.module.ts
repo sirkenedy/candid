@@ -1,11 +1,15 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './modules/users/users.module';
+import { AuthModule } from './components/auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CustomersModule } from './modules/customers/customers.module';
+import { UsersModule } from './components/users/users.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { AuthInterceptor } from './interceptor/auth.interceptor';
+import { RolesModule } from './components/roles/roles.module';
+import { Unique } from './validators/unique'
+import { Exist } from './validators/exist'
 import "reflect-metadata";
 
 @Module({
@@ -16,9 +20,12 @@ import "reflect-metadata";
       isGlobal: true
     }),
     TypeOrmModule.forRoot(),
-    CustomersModule,
+    RolesModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, Unique, Exist, {
+    provide: APP_INTERCEPTOR,
+    useClass: AuthInterceptor,
+  }],
 })
 export class AppModule {}
