@@ -1,0 +1,45 @@
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, HttpStatus, UseGuards } from '@nestjs/common';
+import { Response } from 'express';
+import { RolesService } from './roles.service';
+import { CreateRoleDto } from './dto/create-role.dto';
+import { UpdateRoleDto } from './dto/update-role.dto';
+import { Roles as Role } from './entities/role.entity';
+import { JwtAuthGuard } from './../auth/guard/jwt-auth.guard';
+
+@Controller('roles')
+export class RolesController {
+  constructor(private readonly rolesService: RolesService) {}
+
+  // @UseGuards(JwtAuthGuard)
+  @Post()
+  create(@Body() CreateRoleDto: CreateRoleDto) {
+    return this.rolesService.create(CreateRoleDto);
+  }
+
+  @Get()
+  findAll() {
+    return this.rolesService.findAll();
+  }
+
+  @Get(':id')
+  async findOne(@Param('id') id: string, @Res() res: Response): Promise<Response> {
+    let book = await this.rolesService.findOne(+id)
+    if(book) return res.status(HttpStatus.OK).json(book)
+    return res.status(HttpStatus.NOT_FOUND).json({"error" : "This resource  no longer exist or has been removed"})
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id')
+  async update(@Param('id') id: string, @Body() UpdateRoleDto: UpdateRoleDto, @Res() res: Response) {
+    const response = await this.rolesService.update(+id, UpdateRoleDto);
+    if(response) return res.status(HttpStatus.OK).json({"message" : "Book information updated successfully"});
+    return res.status(HttpStatus.NOT_FOUND).json({"error" : "The resource to be updated no longer exist"})
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id')
+  async remove(@Param('id') id: string, @Res() res: Response) {
+    await this.rolesService.remove(+id);
+    res.status(HttpStatus.OK).json({"message" : "Book details deleted successfully"});
+  }
+}
