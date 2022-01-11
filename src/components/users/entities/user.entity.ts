@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Roles as Role } from '../../roles/entities/role.entity'
 
 @Entity()
 export class Users {
@@ -20,6 +21,6 @@ export class Users {
   @Column({ default: null, type:"datetime"})
   updated_at?:  Date;
 
-  // @OneToMany(() => Book, book => book.user)
-  //   books?: Book[];
+  @ManyToOne(() => Role, role => role.users)
+  role: Role;
 }
