@@ -54,6 +54,9 @@ export class UserMigration1641829832615 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
+        const table = await queryRunner.getTable("users");
+        const guardForeignKey = table.foreignKeys.find(fk => fk.columnNames.indexOf("roleId") !== -1);
+        await queryRunner.dropForeignKey("users", guardForeignKey);
         await queryRunner.dropTable("users");
     }
 
