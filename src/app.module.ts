@@ -10,6 +10,8 @@ import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { RolesModule } from './components/roles/roles.module';
 import { Unique } from './validators/unique'
 import { Exist } from './validators/exist'
+import { GuardsModule } from './components/guards/guards.module';
+import { GuarantorsModule } from './components/guarantors/guarantors.module';
 import "reflect-metadata";
 
 @Module({
@@ -21,6 +23,8 @@ import "reflect-metadata";
     }),
     TypeOrmModule.forRoot(),
     RolesModule,
+    GuardsModule,
+    GuarantorsModule,
   ],
   controllers: [AppController],
   providers: [AppService, Unique, Exist, {

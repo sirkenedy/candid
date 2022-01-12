@@ -22,10 +22,8 @@ export class RolesController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string, @Res() res: Response): Promise<Response> {
-    let book = await this.rolesService.findOne(+id)
-    if(book) return res.status(HttpStatus.OK).json(book)
-    return res.status(HttpStatus.NOT_FOUND).json({"error" : "This resource  no longer exist or has been removed"})
+  async findOne(@Param('id') id: string): Promise<Role> {
+    return this.rolesService.findOne(+id)
   }
 
   @UseGuards(JwtAuthGuard)

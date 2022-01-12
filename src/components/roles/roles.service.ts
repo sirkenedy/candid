@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
 import { Roles as Role } from './entities/role.entity';
@@ -18,17 +18,19 @@ export class RolesService {
     return this.RolesRepository.find()
   }
 
-  findOne(id: number): Promise<Role> {
-    return this.RolesRepository.findOne(id);
+  async findOne(id: number): Promise<Role> {
+    return await this.RolesRepository.findOneOrFail(id).then(res => res).catch (e => {
+      throw new NotFoundException()
+    });
   }
 
   async update(id:number, data: object): Promise<Role | UpdateResult | undefined> {
-    const Role = await this.findOne(id).then(res =>res);
-    if(Role) return await this.RolesRepository.update(id, data).then(res => res);
-    return ;
+    this.findOne(id)
+    return await this.RolesRepository.update(id, data).then(res => res);
   }
 
   async remove(id: number) {
+    this.findOne(id)
     return await this.RolesRepository.delete(id);
   }
 }
