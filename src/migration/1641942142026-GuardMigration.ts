@@ -14,11 +14,6 @@ export class GuardMigration1641942142026 implements MigrationInterface {
                     generationStrategy: 'increment',
                 },
                 {
-                    name: "vetStatus",
-                    type: "boolen",
-                    default: false,
-                },
-                {
                     name: "surname",
                     type: "varchar",
                     isNullable: false,
