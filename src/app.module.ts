@@ -12,6 +12,7 @@ import { Unique } from './validators/unique'
 import { Exist } from './validators/exist'
 import { GuardsModule } from './components/guards/guards.module';
 import { GuarantorsModule } from './components/guarantors/guarantors.module';
+import { RemarksModule } from './components/remarks/remarks.module';
 import "reflect-metadata";
 
 @Module({
@@ -25,6 +26,7 @@ import "reflect-metadata";
     RolesModule,
     GuardsModule,
     GuarantorsModule,
+    RemarksModule,
   ],
   controllers: [AppController],
   providers: [AppService, Unique, Exist, {
