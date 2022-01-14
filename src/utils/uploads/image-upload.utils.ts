@@ -1,4 +1,5 @@
 import { extname } from "path";
+import * as fs from 'fs';
 
 export const imageFileFilter = (req, file, callback) => {
     if (!file.originalname.match(/\.(jpg|jpeg|png|pdf|gif)$/)) {
@@ -10,33 +11,45 @@ export const imageFileFilter = (req, file, callback) => {
   export const editFileName = (req, file, callback) => {
     const name = file.originalname.split('.')[0];
     const fileExtName = extname(file.originalname);
-    const randomName = Array(4)
+    const randomName = Array(6)
       .fill(null)
       .map(() => Math.round(Math.random() * 16).toString(16))
       .join('');
     callback(null, `${name}-${randomName}${fileExtName}`);
   };
 
-  export const fileDestination = (req, file, callback) => {
-    if (file.fieldname === "brochure") { // if uploading resume
+  export const fileDestination = async (req, file, callback) => {
+    if (file.fieldname === "signature") { // if uploading resume
       console.log("seen")
-      return callback(null, './files/brochure');
+      const dir = './files/signature'
+      await fs.promises.access(dir, fs.constants.F_OK)
+           .then(() => console.log("seen"))
+           .catch(() => {
+              fs.promises.mkdir(dir, { recursive: true }).catch(console.error);
+           })
+        return callback(null, dir);
     } else { // else uploading image
-      return callback(null, './files/product-images');
+      const dir = './files/user-images'
+       await fs.promises.access(dir, fs.constants.F_OK)
+           .then(() => console.log("seen"))
+           .catch(() => {
+              fs.promises.mkdir(dir, { recursive: true }).catch(console.error);
+           })
+        return callback(null, dir);
     }
   }
 
   export const fileFilter = (req, file, cb) => {
-    if (file.fieldname === "brochure") { // if uploading resume
+    if (file.fieldname === "image") { // if uploading resume
       if (
-        file.mimetype === 'application/pdf' ||
-        file.mimetype === 'application/msword' ||
-        file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        file.mimetype === 'image/png' ||
+        file.mimetype === 'image/jpg' ||
+        file.mimetype === 'image/jpeg'
       ) { // check file type to be pdf, doc, or docx
         cb(null, true);
       } else {
         // cb(null, false); // else fails
-        return cb(new Error('File format for product brochure not supported'), false);
+        return cb(new Error('File format for image uploaded not supported'), false);
       }
     } else { // else uploading image
       if (
