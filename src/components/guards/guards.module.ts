@@ -6,7 +6,7 @@ import { Guards as Guard } from './entities/guard.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Guard])],
-  exports: [TypeOrmModule],
+  exports: [TypeOrmModule, GuardsService],
   controllers: [GuardsController],
   providers: [GuardsService]
 })

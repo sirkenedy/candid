@@ -20,7 +20,7 @@ export class RolesService {
 
   async findOne(id: number): Promise<Role> {
     return await this.RolesRepository.findOneOrFail(id).then(res => res).catch (e => {
-      throw new NotFoundException()
+      throw new NotFoundException(e)
     });
   }
 

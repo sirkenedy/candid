@@ -14,6 +14,9 @@ export class CreateGuardDto {
     @IsEmail({"message" : "Enter a valid email adress"})
     @Validate(Unique, [Guard, "email"])
     email: string;
+    
+    @IsNotEmpty({"message" : "upload an image"})
+    image: string;
 
     @IsDate({"message" : "date of birth field must be of type date"})
     dob: string;
@@ -96,5 +99,4 @@ export class CreateGuardDto {
     
     @IsNotEmpty({"message" : "upload your signature"})
     signature: string;
-
 }

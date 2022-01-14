@@ -1,5 +1,5 @@
 import { Guards as Guard } from '../../guards/entities/guard.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
 
 @Entity()
 export class Guarantors {
@@ -64,5 +64,6 @@ export class Guarantors {
     updated_at?:  Date;
 
     @ManyToOne(() => Guard, guard => guard.guarantors)
-    guard: Guard;
+    @JoinColumn({ name: "guardId" })
+    guard?: Guard;
 }
