@@ -10,7 +10,7 @@ import { JwtAuthGuard } from './../auth/guard/jwt-auth.guard';
 export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() CreateRoleDto: CreateRoleDto) {
     return this.rolesService.create(CreateRoleDto);
@@ -30,7 +30,7 @@ export class RolesController {
   @Patch(':id')
   async update(@Param('id') id: string, @Body() UpdateRoleDto: UpdateRoleDto, @Res() res: Response) {
     const response = await this.rolesService.update(+id, UpdateRoleDto);
-    if(response) return res.status(HttpStatus.OK).json({"message" : "Book information updated successfully"});
+    if(response) return res.status(HttpStatus.OK).json({"message" : "Role information updated successfully"});
     return res.status(HttpStatus.NOT_FOUND).json({"error" : "The resource to be updated no longer exist"})
   }
 
@@ -38,6 +38,6 @@ export class RolesController {
   @Delete(':id')
   async remove(@Param('id') id: string, @Res() res: Response) {
     await this.rolesService.remove(+id);
-    res.status(HttpStatus.OK).json({"message" : "Book details deleted successfully"});
+    res.status(HttpStatus.OK).json({"message" : "Role details deleted successfully"});
   }
 }
