@@ -1,14 +1,25 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFiles } from '@nestjs/common';
 import { RemarksService } from './remarks.service';
 import { CreateRemarkDto } from './dto/create-remark.dto';
 import { UpdateRemarkDto } from './dto/update-remark.dto';
+import { diskStorage } from  'multer';
+import { FilesInterceptor } from '@nestjs/platform-express'
+import { editFileName, fileFilter, imageFileFilter, fileDestination } from './../../utils/uploads/image-upload.utils';
 
 @Controller('guards/:guardId/remarks')
 export class RemarksController {
   constructor(private readonly remarksService: RemarksService) {}
 
   @Post()
-  create(@Body() createRemarkDto: CreateRemarkDto) {
+  @UseInterceptors(FilesInterceptor('pictures',10, {
+    storage:diskStorage({
+      destination: fileDestination,
+      filename: editFileName,
+    }),
+  fileFilter : fileFilter,
+  }))
+  create(@UploadedFiles() pictures: Array<Express.Multer.File>, @Body() createRemarkDto: CreateRemarkDto) {
+    console.log("working",JSON.stringify(pictures));
     return this.remarksService.create(createRemarkDto);
   }
 
