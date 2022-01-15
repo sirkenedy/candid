@@ -7,22 +7,25 @@ export class Guarantors {
     id: number;
 
     @Column()
+    guardId?: string;
+
+    @Column()
     surname: string;
 
     @Column()
     otherName: string;
 
     @Column()
-    phoneNumber: number;
+    phoneNumber: string;
 
     @Column()
     image: string;
 
     @Column()
-    dob: Date;
+    dob: string;
 
     @Column()
-    age: number;
+    age: string;
 
     @Column()
     spouseName: string;
@@ -46,7 +49,7 @@ export class Guarantors {
     officeAddress: string;
 
     @Column()
-    officePhoneNumber: number;
+    officePhoneNumber: string;
 
     @Column()
     applicantRelationship: string;
@@ -64,6 +67,5 @@ export class Guarantors {
     updated_at?:  Date;
 
     @ManyToOne(() => Guard, guard => guard.guarantors)
-    @JoinColumn({ name: "guardId" })
     guard?: Guard;
 }
