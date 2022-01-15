@@ -6,22 +6,20 @@ import { Unique } from 'src/validators';
 export class CreateGuarantorDto {
     id: number;
 
-    @IsNotEmpty({"message" : "Name field cannot be empty"})
+    @IsNotEmpty({"message" : "Surname field cannot be empty"})
     surname: string;
 
-    @IsNotEmpty({"message" : "Name field cannot be empty"})
+    @IsNotEmpty({"message" : "Othername field cannot be empty"})
     otherName: string;
 
-    @IsDate({"message" : "date of birth field must be of type date"})
+    @IsNotEmpty({"message" : "date of birth field must be of type date"})
     dob: string;
     
     @IsNotEmpty({"message" : "Enter your age"})
-    @IsNumber()
-    age: number;
+    age: string;
     
     @IsNotEmpty({"message" : "specify your phone numbere"})
-    @IsNumber()
-    phoneNumber: number;
+    phoneNumber: string;
     
     @IsNotEmpty({"message" : "upload an image"})
     image: string;
@@ -48,7 +46,7 @@ export class CreateGuarantorDto {
     officeAddress: string;
     
     @IsNotEmpty({"message" : "phone number field cannot be empty"})
-    officePhoneNumber: number;
+    officePhoneNumber: string;
     
     @IsNotEmpty({"message" : "relationship with applicant not specified"})
     applicantRelationship: string;

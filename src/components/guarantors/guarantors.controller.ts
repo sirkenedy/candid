@@ -1,5 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UploadedFiles, UseInterceptors, HttpStatus, Res } from '@nestjs/common';
 import { editFileName, fileFilter, imageFileFilter, fileDestination } from './../../utils/uploads/image-upload.utils';
+import { Response } from 'express';
 import { AddFilesToBody, AddParamToBody, transformToTypeTypes } from 'src/utils/decorators';
 import { diskStorage } from  'multer';
 import { FileFieldsInterceptor } from '@nestjs/platform-express'
@@ -29,35 +30,30 @@ export class GuarantorsController {
   }
 
   @Get()
-  findAll() {
-    return this.guarantorsService.findAll();
+  findAll(@Param('guardId') guardId: number) {
+    // return this.guarantorsService.find({guardId});
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.guarantorsService.findOne(+id);
+  findOne(@Param('guardId') guardId: number, @Param('id') id: number) {
+    return this.guarantorsService.findOne({id, guardId});
   }
 
   @Patch(':id')
   @UseInterceptors(FileFieldsInterceptor([
-    { name: 'image', maxCount: 1 },
-    { name: 'signature', maxCount: 1 },
-  ], {
-    storage:diskStorage({
-        destination: fileDestination,
-        filename: editFileName,
-      }),
-    fileFilter : fileFilter, //create an exception file to be thrown if file format is not supported
+  ], {//create an exception file to be thrown if file format is not supported
   }))
-  update(@Param('id') id: string, @AddParamToBody({
+  update(@Param('id') id: string, @Param('guardId') guardId: string, @AddParamToBody({
     paramName: 'id',
     transformTo: transformToTypeTypes.INT
-}) @Body() updateGuarantorDto: UpdateGuarantorDto) {
-    return this.guarantorsService.update(+id, updateGuarantorDto);
+}) @Body() updateGuarantorDto: UpdateGuarantorDto, @Res() res: Response) {
+    const response = this.guarantorsService.update({id, guardId }, updateGuarantorDto);
+    if(response) return res.status(HttpStatus.OK).json({"message" : "guarantor information updated successfully"});
+    return res.status(HttpStatus.NOT_FOUND).json({"error" : "The resource to be updated no longer exist"})
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.guarantorsService.remove(+id);
+  remove(@Param('id') id: string, @Param('guardId') guardId: string) {
+    return this.guarantorsService.remove({id, guardId});
   }
 }

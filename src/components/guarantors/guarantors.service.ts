@@ -1,5 +1,5 @@
 import { Guarantors as Guarantor } from './entities/guarantor.entity';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, HttpStatus, HttpException } from '@nestjs/common';
 import { CreateGuarantorDto } from './dto/create-guarantor.dto';
 import { UpdateGuarantorDto } from './dto/update-guarantor.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -16,30 +16,45 @@ export class GuarantorsService {
 
   async create(guardId:number, data): Promise<Guarantor> {
     const count = await this.count({ guardId });
+    console.log(count, "dfghjk")
     if(count < 2) {
       data.guard = await this.guardsService.findOne(guardId).then(res=>res);
+      console.log(data)
       return await this.guarantorsRepository.save(data).then(res => res);
     }
+    throw new HttpException({
+      status: HttpStatus.BAD_REQUEST,
+      error: 'This gurads already has two gurantors',
+    }, HttpStatus.BAD_REQUEST);
   }
 
   async findAll(): Promise<Guarantor[]> {
     return await this.guarantorsRepository.find()
   }
 
-  async findOne(id: number): Promise<void | Guarantor> {
-    return await this.guarantorsRepository.findOneOrFail(id).then(res => res).catch (e => {
+  async find(options: object): Promise<Guarantor[]> {
+    return await this.guarantorsRepository.find({
+      where : [options],
+      order: {
+        id: "DESC",
+    },
+    })
+  }
+
+  async findOne(options: object): Promise<void | Guarantor> {
+    return await this.guarantorsRepository.findOneOrFail(options).then(res => res).catch (e => {
       throw new NotFoundException()
     });
   }
 
-  async update(id: number, updateGuarantorDto: UpdateGuarantorDto): Promise<Guarantor | UpdateResult | undefined> {
-    this.findOne(id);
-    return await this.guarantorsRepository.update(id, updateGuarantorDto).then(res => res);
+  async update(options: object, updateGuarantorDto: UpdateGuarantorDto): Promise<Guarantor | UpdateResult | undefined> {
+    this.findOne(options);
+    return await this.guarantorsRepository.update(options, updateGuarantorDto).then(res => res);
   }
 
-  async  remove(id: number) {
-    this.findOne(id);
-    return await this.guarantorsRepository.delete(id);
+  async  remove(options: object) {
+    this.findOne(options);
+    return await this.guarantorsRepository.delete(options);
   }
 
   async count(options : object) : Promise<number> {
