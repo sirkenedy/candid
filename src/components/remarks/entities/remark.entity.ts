@@ -6,8 +6,8 @@ export class Remarks {
     @PrimaryGeneratedColumn('increment')
     id: number;
 
-    @Column()
-    pictures: string;
+    @Column({type:"json"})
+    pictures: JSON;
 
     @Column()
     comment: string;
