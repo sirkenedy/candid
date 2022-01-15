@@ -1,14 +1,17 @@
-import { IsNotEmpty, IsEmail, IsDate, IsBoolean } from 'class-validator';
+import { IsNotEmpty, IsEmail, IsDate, IsBoolean, IsNumber } from 'class-validator';
 import { Guards as Guard } from '../entities/guard.entity';
 import { Validate } from 'class-validator';
 import { Unique } from 'src/validators';
 export class CreateGuardDto {
     id: number;
 
+    // @IsNotEmpty({"message" : "vetstatus field cannot be empty"})
+    // vetStatus: string;
+
     @IsNotEmpty({"message" : "Name field cannot be empty"})
     surname: string;
 
-    @IsNotEmpty({"message" : "Name field cannot be empty"})
+    @IsNotEmpty({"message" : "Othername field cannot be empty"})
     otherName: string;
     
     @IsEmail({"message" : "Enter a valid email adress"})
@@ -18,12 +21,12 @@ export class CreateGuardDto {
     @IsNotEmpty({"message" : "upload an image"})
     image: string;
 
-    @IsDate({"message" : "date of birth field must be of type date"})
-    dob: string;
+    @IsNotEmpty({"message" : "date of birth field must be of type date"})
+    dob: string; // Date
     
     @IsNotEmpty({"message" : "specify your age"})
-    @IsDate({"message" : "Enter a valid number"})
-    age: number;
+    // @IsNumber()
+    age: string;
     
     @IsNotEmpty({"message" : "blood group field cannot be empty"})
     bloodGroup: string;
@@ -88,7 +91,7 @@ export class CreateGuardDto {
     @IsNotEmpty({"message" : "Enter your mother phone number"})
     motherNamePhoneNumber: number;
     
-    @IsBoolean({"message" : "body mark field must either be true or false"})
+    @IsNotEmpty({"message" : "body mark field must either be true or false"})
     bodyMark: boolean;
     
     @IsNotEmpty({"message" : "Enter the part of the body where mark is located"})

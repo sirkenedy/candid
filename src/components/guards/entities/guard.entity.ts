@@ -7,8 +7,8 @@ export class Guards {
     @PrimaryGeneratedColumn('increment')
     id: number;
 
-    @Column({default: false})
-    vetStatus: boolean;
+    // @Column({default: false})
+    // vetStatus: boolean;
 
     @Column()
     surname: string;
@@ -28,11 +28,11 @@ export class Guards {
     @Column()
     lga: string;
 
-    @Column({type:"datetime"})
-    dob: Date;
+    @Column()
+    dob: string;
 
-    @Column({type:"datetime"})
-    age: number;
+    @Column()
+    age: string;
 
     @Column()
     bloodGroup: string;
@@ -119,6 +119,6 @@ export class Guards {
     guarantors?: Guarantor[];
 
     @OneToOne(() => Remark, remark => remark.guard)
-    @JoinColumn()
+    // @JoinColumn()
     remark: Remark;
 }

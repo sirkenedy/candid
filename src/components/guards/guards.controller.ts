@@ -1,4 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UploadedFiles, UseInterceptors, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UploadedFiles, UseInterceptors, UseGuards, HttpStatus, Res } from '@nestjs/common';
+import { Response } from 'express';
 import { editFileName, fileFilter, imageFileFilter, fileDestination } from './../../utils/uploads/image-upload.utils';
 import { AddFilesToBody, AddParamToBody, transformToTypeTypes } from 'src/utils/decorators';
 import { diskStorage } from  'multer';
@@ -27,6 +28,7 @@ export class GuardsController {
   create(@UploadedFiles() files: { image?: Express.Multer.File[], signature?: Express.Multer.File[] }, @AddFilesToBody({
     paramName: ['image', 'signature']
 }) @Body() createGuardDto: CreateGuardDto) {
+  // return createGuardDto;
     return this.guardsService.create(createGuardDto);
   }
 
@@ -57,8 +59,10 @@ export class GuardsController {
   update(@Param('id') id: string, @AddParamToBody({
     paramName: 'id',
     transformTo: transformToTypeTypes.INT
-}) @Body() updateGuardDto: UpdateGuardDto) {
-    return this.guardsService.update(+id, updateGuardDto);
+}) @Body() updateGuardDto: UpdateGuardDto, @Res() res: Response) {
+    const response = this.guardsService.update(+id, updateGuardDto);
+    if(response) return res.status(HttpStatus.OK).json({"message" : "guard information updated successfully"});
+    return res.status(HttpStatus.NOT_FOUND).json({"error" : "The resource to be updated no longer exist"})
   }
 
   @UseGuards(JwtAuthGuard)

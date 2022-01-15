@@ -13,7 +13,7 @@ export class GuardsService {
   ) {}
 
   async create(createGuardDto: CreateGuardDto): Promise<Guard> {
-    return await this.guardsRepository.save(createGuardDto).then(res => res);
+    return await this.guardsRepository.save(createGuardDto).then(res => res).catch();
   }
 
   async findAll(): Promise<Guard[]> {
