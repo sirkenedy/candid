@@ -43,7 +43,7 @@ export class UserMigration1641829832615 implements MigrationInterface {
                     default: 'now()',
                 }
             ]
-        }), true);
+        }), true)
 
         await queryRunner.createForeignKey("users", new TableForeignKey({
             columnNames: ["roleId"],
