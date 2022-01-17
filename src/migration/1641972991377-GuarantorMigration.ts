@@ -114,7 +114,7 @@ export class GuarantorMigration1641972991377 implements MigrationInterface {
                     default: 'now()',
                 }
             ]
-        }), true);
+        }), true)
 
         await queryRunner.createForeignKey("guarantors", new TableForeignKey({
             columnNames: ["guardId"],
