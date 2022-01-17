@@ -189,7 +189,7 @@ export class GuardMigration1641942142026 implements MigrationInterface {
                     default: 'now()',
                 }
             ]
-        }), true);
+        }), true)
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
