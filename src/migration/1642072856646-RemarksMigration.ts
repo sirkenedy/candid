@@ -38,7 +38,7 @@ export class RemarksMigration1642072856646 implements MigrationInterface {
                     default: 'now()',
                 }
             ]
-        }), true);
+        }), true)
 
         await queryRunner.createForeignKey("remarks", new TableForeignKey({
             columnNames: ["guardId"],
