@@ -37,7 +37,7 @@ export class RoleMigration1641829818935 implements MigrationInterface {
                     default: 'now()'
                 }
             ]
-        }), true);
+        }), true)
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
