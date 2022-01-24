@@ -3,8 +3,9 @@ import { RemarksService } from './remarks.service';
 import { CreateRemarkDto } from './dto/create-remark.dto';
 import { UpdateRemarkDto } from './dto/update-remark.dto';
 import { diskStorage } from  'multer';
-import { FilesInterceptor } from '@nestjs/platform-express'
+import { FilesInterceptor, FileFieldsInterceptor } from '@nestjs/platform-express'
 import { editFileName, fileFilter, imageFileFilter, fileDestination } from './../../utils/uploads/image-upload.utils';
+import { AddFilesToBody, AddParamToBody, transformToTypeTypes } from 'src/utils/decorators';
 
 @Controller('guards/:guardId/remarks')
 export class RemarksController {
@@ -18,23 +19,31 @@ export class RemarksController {
     }),
   fileFilter : fileFilter,
   }))
-  create(@UploadedFiles() pictures: Array<Express.Multer.File>, @Body() createRemarkDto: CreateRemarkDto) {
-    console.log("working",JSON.stringify(pictures));
-    return this.remarksService.create(createRemarkDto);
+  create(@Param('guardId') guardId: string, @UploadedFiles() pictures: Array<Express.Multer.File>,  @AddParamToBody({
+    paramName: 'guardId',
+    transformTo: transformToTypeTypes.INT
+})@Body() createRemarkDto: CreateRemarkDto) {
+    return this.remarksService.create(pictures, createRemarkDto);
   }
 
   @Get()
   findAll() {
-    return this.remarksService.findAll();
+    // return this.remarksService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string, @Param('guardId') guardId: string) {
-    return this.remarksService.findOne(+id);
+    return this.remarksService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRemarkDto: UpdateRemarkDto) {
+  @UseInterceptors(FileFieldsInterceptor([
+  ], {//create an exception file to be thrown if file format is not supported
+  }))
+  update(@Param('id') id: string, @AddParamToBody({
+    paramName: 'id',
+    transformTo: transformToTypeTypes.INT
+}) @Body() updateRemarkDto: UpdateRemarkDto) {
     return this.remarksService.update(+id, updateRemarkDto);
   }
 

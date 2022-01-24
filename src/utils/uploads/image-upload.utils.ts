@@ -28,6 +28,10 @@ export const imageFileFilter = (req, file, callback) => {
               fs.promises.mkdir(dir, { recursive: true }).catch(console.error);
            })
         return callback(null, dir);
+    } else if(file.fieldname === "pictures"){
+      const dir = './files/pictures'
+          console.log(file.fieldname);
+          return callback(null, dir);
     } else { // else uploading image
       const dir = './files/user-images'
        await fs.promises.access(dir, fs.constants.F_OK)

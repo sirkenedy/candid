@@ -4,23 +4,36 @@ import { Repository, UpdateResult } from 'typeorm';
 import { Remarks as Remark } from './entities/remark.entity';
 import { CreateRemarkDto } from './dto/create-remark.dto';
 import { UpdateRemarkDto } from './dto/update-remark.dto';
+import { GuardsService } from './../guards/guards.service'
 
 @Injectable()
 export class RemarksService {
   constructor(
     @InjectRepository(Remark)
     private remarksRepository: Repository<Remark>,
+    private guardsService: GuardsService,
   ) {}
 
-  async create(createRemarkDto: CreateRemarkDto): Promise<Remark> {
-    return await this.remarksRepository.save(createRemarkDto).then(res => res);
+  async create(pics:any, data: any): Promise<Remark> {
+    data.pictures = JSON.stringify(pics.map(picture => picture.path))
+    data.guard = await this.guardsService.findOne(data.guardId).then(res=> res)
+    return await this.remarksRepository.save(data).then(res => res).catch(e=> console.log("vee", e));
   }
 
   async findAll(): Promise<Remark[]> {
-    return await this.remarksRepository.find()
+    return await this.remarksRepository.find();
   }
 
-  async findOne(id: number): Promise<void | Remark> {
+  async find(options: object): Promise<Remark[]> {
+    return await this.remarksRepository.find({
+      where : [options],
+      order: {
+        id: "DESC",
+    },
+    })
+  }
+
+  async findOne(id: number|string): Promise<void | Remark> {
     return await this.remarksRepository.findOneOrFail(id).then(res => res).catch (e => {
       throw new NotFoundException()
     });

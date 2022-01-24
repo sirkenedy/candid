@@ -16,10 +16,8 @@ export class GuarantorsService {
 
   async create(guardId:number, data): Promise<Guarantor> {
     const count = await this.count({ guardId });
-    console.log(count, "dfghjk")
     if(count < 2) {
       data.guard = await this.guardsService.findOne(guardId).then(res=>res);
-      console.log(data)
       return await this.guarantorsRepository.save(data).then(res => res);
     }
     throw new HttpException({

@@ -21,6 +21,7 @@ export class GuardsService {
   }
 
   async findOne(id: number): Promise<void | Guard> {
+    console.log(id)
     return await this.guardsRepository.findOneOrFail(id).then(res => res).catch (e => {
       throw new NotFoundException()
     });

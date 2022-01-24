@@ -11,7 +11,7 @@ async function bootstrap() {
     transform: true,
   }));
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
-  await app.listen(3000).then(()=>{
+  await app.listen(process.env.PORT || 3000).then(()=>{
     console.log("Application started");
   });
 }
