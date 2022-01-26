@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, CacheInterceptor, CacheModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './components/auth/auth.module';
@@ -27,11 +27,21 @@ import "reflect-metadata";
     GuardsModule,
     GuarantorsModule,
     RemarksModule,
+    CacheModule.register({
+      ttl: 5, // seconds
+      max: 10, // maximum number of items in cache
+      isGlobal: true,
+    }),
   ],
   controllers: [AppController],
   providers: [AppService, Unique, Exist, {
     provide: APP_INTERCEPTOR,
     useClass: AuthInterceptor,
-  }],
+  },
+  {
+    provide: APP_INTERCEPTOR,
+    useClass: CacheInterceptor,
+  },
+],
 })
 export class AppModule {}
