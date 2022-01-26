@@ -13,7 +13,7 @@ export class AuthInterceptor implements NestInterceptor {
     @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) {}
 
-  async intercept(context: ExecutionContext, next: CallHandler): Promis<any> {
+  async intercept(context: ExecutionContext, next: CallHandler): Promise<any> {
     const req = context.switchToHttp().getRequest();
     let tokenArray = req.headers.authorization;
     if(tokenArray) {
