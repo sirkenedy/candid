@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Res, HttpStatus, UseGuards } from '@nestjs/common';
-import { Response } from 'express';import { SoldiersService } from './soldiers.service';
+import { Response } from 'express';
+import { SoldiersService } from './soldiers.service';
 import { Soldiers as Soldier } from './entities/soldier.entity';
 import { JwtAuthGuard } from './../auth/guard/jwt-auth.guard';
 import { CreateSoldierDto } from './dto/create-soldier.dto';
@@ -11,8 +12,8 @@ export class SoldiersController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() CreateSoldierDto: CreateSoldierDto) {
-    return this.soldiersService.create(CreateSoldierDto);
+  create(@Body() createSoldierDto: CreateSoldierDto) {
+    return this.soldiersService.create(createSoldierDto);
   }
 
   @Get()

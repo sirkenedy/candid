@@ -18,6 +18,9 @@ export class Soldiers {
   @Column()
   state_of_origin: string;
 
+  @Column()
+  local_govt: string;
+
   @Column({ default: null, type:"datetime"})
   created_at?:  Date;
 
