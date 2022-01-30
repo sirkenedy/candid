@@ -13,6 +13,7 @@ import { Exist } from './validators/exist'
 import { GuardsModule } from './components/guards/guards.module';
 import { GuarantorsModule } from './components/guarantors/guarantors.module';
 import { RemarksModule } from './components/remarks/remarks.module';
+import { SoldiersModule } from './components/soldiers/soldiers.module';
 import "reflect-metadata";
 
 @Module({
@@ -32,6 +33,7 @@ import "reflect-metadata";
       max: 10, // maximum number of items in cache
       isGlobal: true,
     }),
+    SoldiersModule,
   ],
   controllers: [AppController],
   providers: [AppService, Unique, Exist, {
