@@ -24,4 +24,11 @@ export class UsersService {
     return await this.usersRepository.save(data).then(res => res).catch(e => { 
         throw new UnprocessableEntityException() });
   }
+
+  async imageUpload(data) {
+    this.findOne(data.user.id)
+    const {user} = data;
+    user.image = data.image;
+    return await this.usersRepository.update(data.user.id, user).then(res => res);
+  }
 }

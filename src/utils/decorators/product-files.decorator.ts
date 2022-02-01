@@ -9,7 +9,7 @@ export const AddFilesToBody = createParamDecorator ((args: IAddFilesToBodyArgs, 
     const req = ctx.switchToHttp().getRequest();
 
     args.paramName.forEach(param => {
-        if(req.files[param]) req.body[param] = req.files[param][0].path
+        if(req.files[param]) req.body[param] = req.files[param][0].filename
         console.log(req.files[param][0].path)
         // if(req.files[param]) req.body[param] = req.files[param][0].filename
     })
