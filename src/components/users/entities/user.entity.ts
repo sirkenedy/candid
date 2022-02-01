@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, AfterLoad } from 'typeorm';
 import { Roles as Role } from '../../roles/entities/role.entity'
 
 @Entity()
@@ -15,6 +15,9 @@ export class Users {
   @Column()
   password?: string;
 
+  @Column()
+  image?: string;
+
   @Column({ default: null, type:"datetime"})
   created_at?:  Date;
 
@@ -23,4 +26,9 @@ export class Users {
 
   @ManyToOne(() => Role, role => role.users)
   role: Role;
+
+  @AfterLoad()
+    loaded() {
+      this.image = `${process.env.APP_URL}/user/profileimg/${this.image}`
+    }
 }

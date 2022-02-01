@@ -27,11 +27,12 @@ export class AuthService {
             id: user.user.id, 
             email: user.user.email, 
             name: user.user.name, 
+            image: user.user.image,
             created_at: user.user.created_at, 
             updated_at: user.user.updated_at 
         }
     };
-    // console.log({payload});
+    console.log({payload});
     return {
       access_token: this.jwtService.sign(payload),
       user : {
@@ -44,6 +45,7 @@ export class AuthService {
 
     async register(data) {
         data.password = await bcrypt.hash(data.password, 10)
+        data.image = "ken-7ae85e.jpg";
         let response = await this.usersService.create(data);
         if (response) {
             const { password, ...result } = response;
@@ -60,7 +62,6 @@ export class AuthService {
       console.log(expired_at, current_time)
       const ttl:number = expired_at - current_time;
       const value = await this.cacheManager.set(token, true, { ttl });
-      console.log(token, `=> ${ttl}`)
     }
 
   decodeToken(token) : any {

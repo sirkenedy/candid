@@ -14,11 +14,11 @@ export const AddHeaderToBody = createParamDecorator ((args: IAddParamsToBodyArgs
 
     // let value = req.query[args.paramName];
     let value = req.headers.authorization;
-
+    console.log(req.user.payload.user)
    if(args.transformTo === transformToTypeTypes.INT)
         value = parseInt(value);
 
-    req.body[args.paramName] = value;
+    req.body[args.paramName] = req.user.payload.user;
 
     return req;
 });
