@@ -29,6 +29,6 @@ export class Users {
 
   @AfterLoad()
     loaded() {
-      this.image = `${process.env.APP_URL}/user/profileimg/${this.image}`
+      this.image = `${process.env.APP_URL}/users/profileimg/${this.image}`
     }
 }
