@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { AuthService } from '../components/auth/auth.service';
 import { UsersService } from '../components/users/users.service';
-import { Cache } from 'cache-manager'
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class AuthInterceptor implements NestInterceptor {
