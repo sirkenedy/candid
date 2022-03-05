@@ -1,7 +1,7 @@
 import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
-import { Cache } from 'cache-manager'
+import { Cache } from 'cache-manager'; 
 import * as bcrypt from 'bcrypt';
 
 @Injectable()

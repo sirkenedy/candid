@@ -10,7 +10,7 @@ export const AddFilesToBody = createParamDecorator ((args: IAddFilesToBodyArgs, 
 
     args.paramName.forEach(param => {
         if(req.files[param]) req.body[param] = req.files[param][0].filename
-        console.log(req.files[param][0].path)
+        // console.log(req.files[param][0].path)
         // if(req.files[param]) req.body[param] = req.files[param][0].filename
     })
 
